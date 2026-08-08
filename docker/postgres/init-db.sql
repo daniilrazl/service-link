@@ -1,0 +1,3 @@
+CREATE DATABASE link_db;
+CREATE DATABASE redirect_db;
+CREATE DATABASE analytics_db;

@@ -1,0 +1,23 @@
+services:
+  link-service:
+    ports:
+      - "${LINK_SERVICE_PORT:-8001}:8000"
+    volumes:
+      - ./services/link-service/app:/app/app
+      - ./services/link-service/migrations:/app/migrations
+      - ./services/link-service/alembic.ini:/app/alembic.ini
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+
+  link-service-maintenance:
+    volumes:
+      - ./services/link-service/scripts:/app/scripts
+      - ./services/link-service/migrations:/app/migrations
+      - ./services/link-service/alembic.ini:/app/alembic.ini
+
+  rabbitmq:
+    ports:
+      - "${RABBITMQ_MANAGEMENT_PORT:-15672}:15672"
+
+networks:
+  private:
+    internal: false
