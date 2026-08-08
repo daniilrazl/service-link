@@ -12,6 +12,8 @@ class Settings(BaseSettings):
     app_name: str = "link-service"
     debug: bool = False
 
+    short_code_length: int = 8
+
     postgres_user: str = "user"
     postgres_password: SecretStr = SecretStr("pass")
     postgres_host: str = "host"
