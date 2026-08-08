@@ -5,6 +5,8 @@ from loguru import logger
 
 from app.api import links_router
 from app.core.config import settings
+from app.messaging import EventPublisher, get_connection
+from app.services import link_service
 from common.src.logging import setup_logging
 
 setup_logging(level=settings.log_level, log_format=settings.log_format)
@@ -13,8 +15,13 @@ setup_logging(level=settings.log_level, log_format=settings.log_format)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     logger.info("Application starting up...")
+    connection = await get_connection()
+    publisher = EventPublisher(connection)
+    await publisher.setup()
+    link_service.init_publisher(publisher)
     yield
     logger.info("Application is shutting down")
+    await connection.close()
 
 
 app = FastAPI(

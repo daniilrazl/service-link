@@ -28,6 +28,7 @@ class Settings(BaseSettings):
     rabbitmq_password: SecretStr = SecretStr("pass")
     rabbitmq_host: str = "host"
     rabbitmq_port: int = 1
+    rabbitmq_exchange_name: str = "link.events"
 
     @property
     def rabbitmq_url(self) -> str:

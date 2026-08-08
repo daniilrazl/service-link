@@ -2,6 +2,7 @@ from loguru import logger
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
+from app.messaging import EventPublisher, LinkCreated
 from app.models import Link
 from app.repositories import LinkRepository
 from app.schemas import LinkCreate
@@ -11,6 +12,10 @@ from common.src.services import BaseService
 
 class LinkService(BaseService[Link]):
     repo: LinkRepository = LinkRepository()
+    _publisher: EventPublisher | None = None
+
+    def init_publisher(self, publisher: EventPublisher) -> None:
+        self._publisher = publisher
 
     async def get_unique_short_code(self, session: AsyncSession) -> str:
         while True:
@@ -31,6 +36,14 @@ class LinkService(BaseService[Link]):
         await session.refresh(link)
 
         logger.info("Link created", extra={"short_code": short_code})
+
+        if self._publisher:
+            event = LinkCreated(
+                link_id=link.id,
+                short_code=link.short_code,
+                original_url=link.original_url,
+            )
+            await self._publisher.publish(event)
 
         return link
 
