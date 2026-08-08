@@ -31,5 +31,8 @@ class Settings(BaseSettings):
     def rabbitmq_url(self) -> str:
         return f"amqp://{self.rabbitmq_user}:{self.rabbitmq_password.get_secret_value()}@{self.rabbitmq_host}:{self.rabbitmq_port}/"
 
+    log_level: str = "INFO"
+    log_format: str = "text"
+
 
 settings = Settings()

@@ -4,6 +4,7 @@ services:
       - "${LINK_SERVICE_PORT:-8001}:8000"
     volumes:
       - ./services/link-service/app:/app/app
+      - ./common:/app/common
       - ./services/link-service/migrations:/app/migrations
       - ./services/link-service/alembic.ini:/app/alembic.ini
     command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
@@ -11,6 +12,7 @@ services:
   link-service-maintenance:
     volumes:
       - ./services/link-service/scripts:/app/scripts
+      - ./common:/app/common
       - ./services/link-service/migrations:/app/migrations
       - ./services/link-service/alembic.ini:/app/alembic.ini
 
