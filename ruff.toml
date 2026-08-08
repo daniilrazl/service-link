@@ -1,0 +1,29 @@
+line-length = 100
+target-version = "py313"
+
+exclude = [
+  ".venv",
+  "migrations",
+  ".tox",
+]
+
+[lint]
+select = [
+  "E",
+  "F",
+  "I",
+  "UP",
+  "B",
+  "W",
+  "N",
+  "SIM",
+  "C4",
+  "S",
+]
+
+ignore = [
+  "B008",
+]
+
+[lint.per-file-ignores]
+"tests/**/*.py" = ["S101", "F401", "S105", "S106"]

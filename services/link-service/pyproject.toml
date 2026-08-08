@@ -1,7 +1,7 @@
 [project]
 name = "link-service"
 version = "0.1.0"
-description = "Add your description here"
+description = "Description"
 requires-python = ">=3.13"
 dependencies = [
     "aio-pika>=10.0.1",
