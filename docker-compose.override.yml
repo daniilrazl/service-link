@@ -20,6 +20,23 @@ services:
     ports:
       - "${RABBITMQ_MANAGEMENT_PORT:-15672}:15672"
 
+  redirect-service:
+    ports:
+      - "${REDIRECT_SERVICE_PORT:-8002}:8000"
+    volumes:
+      - ./services/redirect-service/app:/app/app
+      - ./common:/app/common
+      - ./services/redirect-service/migrations:/app/migrations
+      - ./services/redirect-service/alembic.ini:/app/alembic.ini
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+
+  redirect-service-maintenance:
+    volumes:
+      - ./services/redirect-service/scripts:/app/scripts
+      - ./common:/app/common
+      - ./services/redirect-service/migrations:/app/migrations
+      - ./services/redirect-service/alembic.ini:/app/alembic.ini
+
 networks:
   private:
     internal: false
