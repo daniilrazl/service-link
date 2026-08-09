@@ -2,11 +2,11 @@ from loguru import logger
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
-from app.messaging import EventPublisher, LinkCreated
 from app.models import Link
 from app.repositories import LinkRepository
 from app.schemas import LinkCreate
 from app.utils import generate_short_code
+from common.src.messaging import EventPublisher, LinkCreated
 from common.src.services import BaseService
 
 

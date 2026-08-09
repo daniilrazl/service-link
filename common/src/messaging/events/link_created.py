@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from app.messaging.constants import ROUTING_KEY_LINK_CREATED
-from app.messaging.events.base import Event
+from common.src.messaging.constants import ROUTING_KEY_LINK_CREATED
+from common.src.messaging.events.base import Event
 
 
 @dataclass

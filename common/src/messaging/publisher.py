@@ -3,28 +3,31 @@ import json
 import aio_pika
 from loguru import logger
 
-from app.core.config import settings
-from app.messaging.constants import (
-    DELIVERY_MODE,
-    EXCHANGE_TYPE,
-)
-from app.messaging.events import Event
+from common.src.messaging.constants import DELIVERY_MODE, EXCHANGE_TYPE
+from common.src.messaging.events.base import Event
 
 
 class EventPublisher:
-    def __init__(self, connection: aio_pika.abc.AbstractRobustConnection):
+    def __init__(
+        self,
+        connection: aio_pika.abc.AbstractRobustConnection,
+        exchange_name: str,
+    ):
         self.connection = connection
+        self.exchange_name = exchange_name
         self.exchange: aio_pika.abc.AbstractExchange | None = None
 
     async def setup(self) -> None:
         channel = await self.connection.channel()
         self.exchange = await channel.declare_exchange(
-            settings.rabbitmq_exchange_name,
+            self.exchange_name,
             EXCHANGE_TYPE,
             durable=True,
         )
-
-        logger.info("Exchange declared", extra={"exchange": settings.rabbitmq_exchange_name})
+        logger.info(
+            "Exchange declared",
+            extra={"exchange": self.exchange_name},
+        )
 
     async def publish(self, event: Event) -> None:
         if self.exchange is None:
