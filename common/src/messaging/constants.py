@@ -4,3 +4,4 @@ EXCHANGE_TYPE = ExchangeType.TOPIC
 DELIVERY_MODE = DeliveryMode.PERSISTENT
 
 ROUTING_KEY_LINK_CREATED = "link.created"
+ROUTING_KEY_LINK_REDIRECTED = "link.redirected"
